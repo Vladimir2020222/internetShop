@@ -9,3 +9,8 @@ DB_PORT = os.environ.get("DB_PORT")
 
 ENCODE_JWT_ALGORITHM = "HS256"
 DECODE_JWT_ALGORITHMS = ["HS256"]
+
+SMTP_HOST = os.environ.get("SMTP_HOST")
+SMTP_PORT = os.environ.get("SMTP_PORT")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+SMTP_EMAIL = os.environ.get("SMTP_EMAIL")
