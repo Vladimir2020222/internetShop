@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from accounts.db import get_user_by_uuid, create_user, update_user_email
+from accounts.db import get_user_by_uuid, create_user, update_user_email, update_user_last_login
 from accounts.hashers import hash_password
 from accounts.utils import authenticate, encode_jwt, decode_jwt
 from db.dependencies import get_async_session
@@ -51,6 +51,7 @@ async def login(
             detail='login or password incorrect'
         )
     token = encode_jwt({'uuid': user.uuid.hex}, expires=datetime.timedelta(weeks=52))
+    await update_user_last_login(db_session, user.uuid)
     return {'token_type': 'bearer', 'access_token': token}
 
 

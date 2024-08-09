@@ -1,3 +1,4 @@
+import datetime
 from uuid import UUID
 
 from sqlalchemy import select, insert, update
@@ -27,6 +28,13 @@ async def create_user(session: AsyncSession, full_name: str, email: str, passwor
     return res.scalar()
 
 
-async def update_user_email(session, uuid: UUID, email: str) -> None:
+async def update_user_email(session: AsyncSession, uuid: UUID, email: str) -> None:
     await session.execute(update(User).where(User.uuid == uuid).values({'email': email}))
+    await session.commit()
+
+
+async def update_user_last_login(session: AsyncSession, uuid: UUID) -> None:
+    await session.execute(
+        update(User).where(User.uuid == uuid).values({'last_login': datetime.datetime.now()})
+    )
     await session.commit()
