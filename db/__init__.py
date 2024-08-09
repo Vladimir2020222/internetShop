@@ -2,8 +2,10 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 import config
 
+SQLALCHEMY_DB_URL = f"postgresql+asyncpg://{config.DB_USERNAME}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/internetshop"
+
 engine = create_async_engine(
-    f"postgresql+asyncpg://{config.DB_USERNAME}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/internetshop"
+    SQLALCHEMY_DB_URL
 )
 
 
