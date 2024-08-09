@@ -1,9 +1,17 @@
 import asyncio
 import hashlib
 import base64
+import random
+import secrets
 
 
-async def hash_password(raw_password: str, salt: str, algorithm: str, iterations: int):
+async def hash_password(
+        raw_password: str,
+        salt: str = None,
+        algorithm: str = 'SHA256',
+        iterations: int = 720_000
+):
+    salt = salt or secrets.token_urlsafe(random.randint(15, 25))
     hash = await asyncio.to_thread(  # pbkdf2_hmac releases GIL
         hashlib.pbkdf2_hmac,
         algorithm,
