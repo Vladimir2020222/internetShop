@@ -10,8 +10,13 @@ import config
 smtp = smtplib.SMTP(host=config.SMTP_HOST, port=config.SMTP_PORT)
 
 
+def sync_init_smtp():
+    smtp.starttls()
+    smtp.login(config.SMTP_EMAIL, config.SMTP_PASSWORD)
+
+
 async def init_smtp():
-    await asyncio.to_thread(smtp.login, config.SMTP_EMAIL, config.SMTP_PASSWORD)
+    await asyncio.to_thread(sync_init_smtp)
 
 
 async def stop_smtp():
