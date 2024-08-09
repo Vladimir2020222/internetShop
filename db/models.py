@@ -4,6 +4,8 @@ from sqlalchemy import String, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from uuid import UUID
 
+from accounts.hashers import check_password
+
 
 class Base(DeclarativeBase):
     pass
@@ -17,3 +19,6 @@ class User(Base):
     email: Mapped[str | None] = mapped_column(String(320), unique=True)  # 320 is standardised max length of email
     password_hash: Mapped[str]
     last_login: Mapped[datetime.datetime] = mapped_column(server_default=text("NOW()"))
+
+    async def check_password(self, raw_password):
+        return await check_password(self.password_hash, raw_password)
